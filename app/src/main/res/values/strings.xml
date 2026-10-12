@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">ObslugaZdarzen</string>
+    <string name="app_name">Obsługa Zdarzeń</string>
+    <string name="default_counter_value">0</string>
+    <string name="btn_increment_text">+1</string>
+    <string name="btn_decrement_text">-1</string>
+    <string name="btn_reset_text">Reset</string>
+    <string name="error_negative">Wartość licznika nie może być ujemna!</string>
 </resources>

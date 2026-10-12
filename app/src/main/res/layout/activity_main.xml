@@ -11,7 +11,7 @@
         android:id="@+id/tvCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="@string/default_counter_value"
         android:textSize="48sp"
         android:layout_marginBottom="32dp" />
 
@@ -19,20 +19,20 @@
         android:id="@+id/btnIncrement"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="+1"
+        android:text="@string/btn_increment_text"
         android:layout_marginBottom="8dp" />
 
     <Button
         android:id="@+id/btnDecrement"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="-1"
+        android:text="@string/btn_decrement_text"
         android:layout_marginBottom="8dp" />
 
     <Button
         android:id="@+id/btnReset"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Reset" />
+        android:text="@string/btn_reset_text" />
 
 </LinearLayout>

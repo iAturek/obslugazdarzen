@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -13,7 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvCounter;
+    private TextView tvDisplay;
+    private Button btnIncrement, btnDecrement, btnReset;
     private int counter = 0;
 
     @Override
@@ -21,30 +22,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        tvCounter = findViewById(R.id.tvCounter);
+        tvDisplay = findViewById(R.id.tvCounter);
+        btnIncrement = findViewById(R.id.btnIncrement);
+        btnDecrement = findViewById(R.id.btnDecrement);
+        btnReset = findViewById(R.id.btnReset);
 
-        View.OnClickListener counterListener = v -> {
-            int id = v.getId();
+        btnIncrement.setOnClickListener(v -> changeCounter(1));
+        btnDecrement.setOnClickListener(v -> changeCounter(-1));
+        btnReset.setOnClickListener(v -> changeCounter(0));
+    }
 
-            if (id == R.id.btnIncrement) {
-                counter++;
-            } else if (id == R.id.btnDecrement) {
-                counter--;
-            } else if (id == R.id.btnReset) {
-                counter = 0;
+    private void changeCounter(int operation) {
+        if (operation == 0) {
+            counter = 0;
+        } else if (operation == -1) {
+            if (counter <= 0) {
+                Toast.makeText(this, getString(R.string.error_negative), Toast.LENGTH_SHORT).show();
+                return;
             }
+            counter--;
+        } else if (operation == 1) {
+            counter++;
+        }
 
-            tvCounter.setText(String.valueOf(counter));
-        };
-
-        findViewById(R.id.btnIncrement).setOnClickListener(counterListener);
-        findViewById(R.id.btnDecrement).setOnClickListener(counterListener);
-        findViewById(R.id.btnReset).setOnClickListener(counterListener);
+        tvDisplay.setText(String.valueOf(counter));
     }
 }
