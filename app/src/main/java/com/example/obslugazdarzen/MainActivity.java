@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvDisplay;
-    private Button btnPlus, btnMinus, btnEqual, btnClear;
+    private Button btnPlus, btnMinus, btnMultiply, btnDivide, btnEqual, btnClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         tvDisplay = findViewById(R.id.tvResult);
         btnPlus = findViewById(R.id.btnPlus);
         btnMinus = findViewById(R.id.btnMinus);
+        btnMultiply = findViewById(R.id.btnMultiply);
+        btnDivide = findViewById(R.id.btnDivide);
         btnEqual = findViewById(R.id.btnEqual);
         btnClear = findViewById(R.id.btnClear);
 
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnPlus.setOnClickListener(v -> appendSymbol("+"));
         btnMinus.setOnClickListener(v -> appendSymbol("-"));
+        btnMultiply.setOnClickListener(v -> appendSymbol("*"));
+        btnDivide.setOnClickListener(v -> appendSymbol("/"));
         btnEqual.setOnClickListener(v -> calculateResult());
         btnClear.setOnClickListener(v -> clearCalculator());
     }
@@ -75,6 +80,29 @@ public class MainActivity extends AppCompatActivity {
                 double firstValue = Double.parseDouble(parts[0]);
                 double secondValue = Double.parseDouble(parts[1]);
                 finalResult = firstValue - secondValue;
+                tvDisplay.setText(String.valueOf(finalResult).replace(".", ","));
+            }
+        } else if (textToParse.contains("*")) {
+            String[] parts = textToParse.split("\\*");
+            if (parts.length == 2) {
+                double firstValue = Double.parseDouble(parts[0]);
+                double secondValue = Double.parseDouble(parts[1]);
+                finalResult = firstValue * secondValue;
+                tvDisplay.setText(String.valueOf(finalResult).replace(".", ","));
+            }
+        } else if (textToParse.contains("/")) {
+            String[] parts = textToParse.split("/");
+            if (parts.length == 2) {
+                double firstValue = Double.parseDouble(parts[0]);
+                double secondValue = Double.parseDouble(parts[1]);
+
+                if (secondValue == 0) {
+                    Toast.makeText(this, "Nie można dzielić przez 0!", Toast.LENGTH_SHORT).show();
+                    tvDisplay.setText("");
+                    return;
+                }
+
+                finalResult = firstValue / secondValue;
                 tvDisplay.setText(String.valueOf(finalResult).replace(".", ","));
             }
         }
