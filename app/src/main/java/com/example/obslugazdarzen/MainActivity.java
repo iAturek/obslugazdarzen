@@ -1,6 +1,7 @@
 package com.example.obslugazdarzen;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,9 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0;
     private TextView tvDisplay;
-
     private Button btnPlus, btnMinus, btnEqual, btnClear;
 
     @Override
@@ -28,33 +27,24 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        btn1 = findViewById(R.id.btn1);
-        btn2 = findViewById(R.id.btn2);
-        btn3 = findViewById(R.id.btn3);
-        btn4 = findViewById(R.id.btn4);
-        btn5 = findViewById(R.id.btn5);
-        btn6 = findViewById(R.id.btn6);
-        btn7 = findViewById(R.id.btn7);
-        btn8 = findViewById(R.id.btn8);
-        btn9 = findViewById(R.id.btn9);
-        btn0 = findViewById(R.id.btn0);
         tvDisplay = findViewById(R.id.tvResult);
-
         btnPlus = findViewById(R.id.btnPlus);
         btnMinus = findViewById(R.id.btnMinus);
         btnEqual = findViewById(R.id.btnEqual);
         btnClear = findViewById(R.id.btnClear);
 
-        btn1.setOnClickListener(v -> appendSymbol("1"));
-        btn2.setOnClickListener(v -> appendSymbol("2"));
-        btn3.setOnClickListener(v -> appendSymbol("3"));
-        btn4.setOnClickListener(v -> appendSymbol("4"));
-        btn5.setOnClickListener(v -> appendSymbol("5"));
-        btn6.setOnClickListener(v -> appendSymbol("6"));
-        btn7.setOnClickListener(v -> appendSymbol("7"));
-        btn8.setOnClickListener(v -> appendSymbol("8"));
-        btn9.setOnClickListener(v -> appendSymbol("9"));
-        btn0.setOnClickListener(v -> appendSymbol("0"));
+        View.OnClickListener symbolListener =
+                v -> appendSymbol(((Button) v).getText().toString());
+
+        int[] symbolIds = {
+                R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4,
+                R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9,
+                R.id.btnComma
+        };
+
+        for (int id : symbolIds) {
+            findViewById(id).setOnClickListener(symbolListener);
+        }
 
         btnPlus.setOnClickListener(v -> appendSymbol("+"));
         btnMinus.setOnClickListener(v -> appendSymbol("-"));
@@ -68,23 +58,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void calculateResult() {
         String currentText = tvDisplay.getText().toString();
+        String textToParse = currentText.replace(",", ".");
         double finalResult = 0;
 
-        if (currentText.contains("+")) {
-            String[] parts = currentText.split("\\+");
+        if (textToParse.contains("+")) {
+            String[] parts = textToParse.split("\\+");
             if (parts.length == 2) {
                 double firstValue = Double.parseDouble(parts[0]);
                 double secondValue = Double.parseDouble(parts[1]);
                 finalResult = firstValue + secondValue;
-                tvDisplay.setText(String.valueOf(finalResult));
+                tvDisplay.setText(String.valueOf(finalResult).replace(".", ","));
             }
-        } else if (currentText.contains("-")) {
-            String[] parts = currentText.split("-");
+        } else if (textToParse.contains("-")) {
+            String[] parts = textToParse.split("-");
             if (parts.length == 2) {
                 double firstValue = Double.parseDouble(parts[0]);
                 double secondValue = Double.parseDouble(parts[1]);
                 finalResult = firstValue - secondValue;
-                tvDisplay.setText(String.valueOf(finalResult));
+                tvDisplay.setText(String.valueOf(finalResult).replace(".", ","));
             }
         }
     }
