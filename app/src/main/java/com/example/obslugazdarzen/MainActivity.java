@@ -11,8 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tvDisplay;
     private Button btnIncrement, btnDecrement, btnReset;
     private int counter = 0;
@@ -34,24 +33,38 @@ public class MainActivity extends AppCompatActivity {
         btnDecrement = findViewById(R.id.btnDecrement);
         btnReset = findViewById(R.id.btnReset);
 
-        btnIncrement.setOnClickListener(v -> changeCounter(1));
-        btnDecrement.setOnClickListener(v -> changeCounter(-1));
-        btnReset.setOnClickListener(v -> changeCounter(0));
+        btnIncrement.setOnClickListener(this);
+        btnDecrement.setOnClickListener(this);
+        btnReset.setOnClickListener(this);
     }
 
-    private void changeCounter(int operation) {
-        if (operation == 0) {
-            counter = 0;
-        } else if (operation == -1) {
-            if (counter <= 0) {
-                Toast.makeText(this, getString(R.string.error_negative), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            counter--;
-        } else if (operation == 1) {
-            counter++;
+    @Override
+    public void onClick(View v) {
+        if (v == btnIncrement) {
+            incrementCounter();
+        } else if (v == btnDecrement) {
+            decrementCounter();
+        } else if (v == btnReset) {
+            resetCounter();
         }
+    }
 
+    private void incrementCounter() {
+        counter++;
+        tvDisplay.setText(String.valueOf(counter));
+    }
+
+    private void decrementCounter() {
+        if (counter <= 0) {
+            Toast.makeText(this, getString(R.string.error_negative), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        counter--;
+        tvDisplay.setText(String.valueOf(counter));
+    }
+
+    private void resetCounter() {
+        counter = 0;
         tvDisplay.setText(String.valueOf(counter));
     }
 }
